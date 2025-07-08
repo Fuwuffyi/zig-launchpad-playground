@@ -8,6 +8,8 @@ pub fn main() !void {
     const allocator: std.mem.Allocator = std.heap.page_allocator;
     // Initialize launchpad
     var launchpad = try Launchpad.init(allocator);
+    // Light up utility buttons
+    try launchpad.setLight(Launchpad.getNamedKey(.MIXER), 3);
     // Run loop to get messages
     var should_stop: bool = false;
     while (!should_stop) {
@@ -18,11 +20,8 @@ pub fn main() !void {
             if (message.matchesKey(Launchpad.getNamedKey(.MIXER))) {
                 should_stop = true;
             }
-            // Clear on VOL press
-            if (message.matchesKey(Launchpad.getNamedKey(.VOL))) {
-                try launchpad.clearGridLights();
-            }
         }
         std.time.sleep(41_670_000); // ~24FPS
     }
+    try launchpad.clearLightsAll();
 }

@@ -105,9 +105,22 @@ pub const Launchpad = struct {
         try self.setLight(key, velocity);
     }
     
-    pub fn clearGridLights(self: *Self) !void {
+    pub fn clearLightsGrid(self: *Self) !void {
         for (0..GRID_SIZE) |i| {
             try self.setGridLight(i, 0);
         }
+    }
+
+    pub fn clearLightsTools(self: *Self) !void {
+        const keyNames = std.EnumSet(NamedKey).initFull();
+        var iter = keyNames.iterator();
+        while (iter.next()) |key| {
+            try self.setLight(Launchpad.getNamedKey(key), 0);
+        }
+    }
+
+    pub fn clearLightsAll(self: *Self) !void {
+        try self.clearLightsGrid();
+        try self.clearLightsTools();
     }
 };
