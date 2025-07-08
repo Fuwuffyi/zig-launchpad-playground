@@ -66,4 +66,12 @@ pub const Keys = struct {
     pub fn getNamedKey(key: NamedKey) LaunchpadKey {
         return namedKeyMap.get(key).?;
     }
+
+    pub fn isEqualK(key1: LaunchpadKey, key2: LaunchpadKey) bool {
+        return key1.command == key2.command and key1.note == key2.note;
+    }
+
+    pub fn isEqual(key: LaunchpadKey, note: u8, command: u8) bool {
+        return key.command == command and key.note == note;
+    }
 };

@@ -52,25 +52,68 @@ pub fn main() !void {
     const selected_path: []u8 = try choose_midi_file(allocator);
     var file: fs.File = try fs.openFileAbsolute(selected_path, .{ .mode = fs.File.OpenMode.read_write });
     defer file.close();
-    // Start logging keys
-    std.debug.print("Status\tNote\tVelo\tComm\tChann\n", .{});
+    var p_x: u8 = 0;
+    var p_y: u8 = 0;
+    var x: u8 = 0;
+    var y: u8 = 0;
+    // Start reading keys from midi
     var should_stop: bool = false;
     var buf: [3]u8 = undefined;
     while (!should_stop) {
+        // If no three values, skip
         const bytes_read: usize = try file.read(buf[0..]);
         if (bytes_read != 3) {
             continue;
         }
+        // Split values
         const status: u8 = buf[0];
         const note: u8 = buf[1];
         const velocity: u8 = buf[2];
         const command: u8 = status & 0xF0;
         const channel: u8 = status & 0x0F;
-        std.debug.print("{}\t{}\t{}\t{}\t{}\n", .{ status, note, velocity, command, channel });
-        
+        // Skip unused
+        _ = channel;
+        // Stop listening on MIXER press
         const exit_key = Keys.getNamedKey(NamedKey.MIXER);
         if (command == exit_key.command and note == exit_key.note) {
             should_stop = true;
         }
+        // Reset lights on VOL press
+        const reset_key = Keys.getNamedKey(NamedKey.VOL);
+        if (command == reset_key.command and note == reset_key.note and velocity > 0) {
+            for (0..64) |i| {
+                const k = try Keys.getGridKey(i);
+                const test_light = [_]u8{
+                    k.command,
+                    k.note,
+                    0,
+                };
+                try file.writeAll(&test_light);
+            }
+        }
+        // Arrow keys move player
+        if (Keys.isEqual(Keys.getNamedKey(NamedKey.UP), note, command) and velocity > 0) {
+            if (y > 0) y -= 1;
+        }
+
+        if (Keys.isEqual(Keys.getNamedKey(NamedKey.DOWN), note, command) and velocity > 0) {
+            if (y < 7) y += 1;
+        }
+
+        if (Keys.isEqual(Keys.getNamedKey(NamedKey.LEFT), note, command) and velocity > 0) {
+            if (x > 0) x -= 1;
+        }
+
+        if (Keys.isEqual(Keys.getNamedKey(NamedKey.RIGHT), note, command) and velocity > 0) {
+            if (x < 7) x += 1;
+        }
+
+        if (x == p_x and y == p_y) continue;
+        const c_k = try Keys.getGridKey(x + y * 8);
+        const l_k = try Keys.getGridKey(p_x + p_y * 8);
+        try file.writeAll(&[_]u8{l_k.command, l_k.note, 0});
+        try file.writeAll(&[_]u8{c_k.command, c_k.note, 45});
+        p_y = y;
+        p_x = x;
     }
 }
