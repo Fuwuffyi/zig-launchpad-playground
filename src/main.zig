@@ -23,5 +23,6 @@ pub fn main() !void {
                 try launchpad.clearGridLights();
             }
         }
+        std.time.sleep(41_670_000); // ~24FPS
     }
 }

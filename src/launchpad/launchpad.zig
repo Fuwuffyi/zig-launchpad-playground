@@ -78,11 +78,10 @@ pub const Launchpad = struct {
 
     pub fn readMessage(self: *Self) !?MidiMessage {
         var buf: [3]u8 = undefined;
-        const bytes_read = try self.device.read(buf[0..]);
-        if (bytes_read != 3) {
-            return null;
+        if (try self.device.readNonBlocking(buf[0..], 1)) |bytes_read| {
+            if (bytes_read == 3) return MidiMessage.fromBytes(buf);
         }
-        return MidiMessage.fromBytes(buf);
+        return null;
     }
 
     pub fn getGridKey(index: usize) !LaunchpadKey {

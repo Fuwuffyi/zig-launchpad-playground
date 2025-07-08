@@ -1,5 +1,6 @@
 const std = @import("std");
 const fs = std.fs;
+const os = std.os;
 
 const MidiError = error {
     NoMidiDeviceFound,
@@ -21,6 +22,21 @@ pub const MidiDevice = struct {
 
     pub fn read(self: *const Self, buffer: []u8) !usize {
         return self.file.read(buffer);
+    }
+    
+    pub fn readNonBlocking(self: *const Self, buffer: []u8, timeout_ms: i32) !?usize {
+        const fd = self.file.handle;
+        var poll_fd = [_]os.linux.pollfd{
+            os.linux.pollfd{
+                .fd = @intCast(fd),
+                .events = os.linux.POLL.IN,
+                .revents = 0,
+            },
+        };
+        const poll_result = os.linux.poll(@ptrCast(&poll_fd), 1, timeout_ms);
+        if (poll_result == 0) return null;
+        if (poll_fd[0].revents & os.linux.POLL.IN != 0) return try self.file.read(buffer);
+        return null;
     }
 
     pub fn write(self: *const Self, data: []const u8) !void {
