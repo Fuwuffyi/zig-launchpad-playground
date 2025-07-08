@@ -1,7 +1,9 @@
 const std = @import("std");
 const fs = std.fs;
 
-const Launchpad = @import("launchpad/launchpad.zig").Launchpad;
+const l = @import("launchpad/launchpad.zig");
+const Launchpad = l.Launchpad;
+const Color = l.Color;
 
 pub fn main() !void {
     // Create allocator
@@ -9,7 +11,7 @@ pub fn main() !void {
     // Initialize launchpad
     var launchpad = try Launchpad.init(allocator);
     // Light up utility buttons
-    try launchpad.setLight(Launchpad.getNamedKey(.MIXER), 3);
+    try launchpad.setLight(Launchpad.getNamedKey(.MIXER), Color.BRIGHT_RED);
     // Run loop to get messages
     var should_stop: bool = false;
     while (!should_stop) {

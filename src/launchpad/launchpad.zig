@@ -27,6 +27,17 @@ pub const NamedKey = enum(u4) {
     MIXER,
 };
 
+pub const Color = enum(u8) {
+    BLANK = 0x0C,
+    DIM_RED = 0x0D,
+    BRIGHT_RED = 0x0F,
+    DIM_AMBER = 0x1D,
+    BRIGHT_AMBER = 0x3F,
+    YELLOW = 0x3E,
+    DIM_GREEN = 0x1C,
+    BRIGHT_GREEN = 0x3C,
+};
+
 pub const Launchpad = struct {
     device: MidiDevice,
     allocator: std.mem.Allocator,
@@ -95,19 +106,19 @@ pub const Launchpad = struct {
         return namedkey_map.get(key).?;
     }
 
-    pub fn setLight(self: *Self, key: LaunchpadKey, velocity: u8) !void {
-        const message = key.toBytes(velocity);
+    pub fn setLight(self: *Self, key: LaunchpadKey, color: Color) !void {
+        const message = key.toBytes(@intFromEnum(color));
         try self.device.write(&message);
     }
     
-    pub fn setGridLight(self: *Self, index: usize, velocity: u8) !void {
+    pub fn setGridLight(self: *Self, index: usize, color: Color) !void {
         const key = try Launchpad.getGridKey(index);
-        try self.setLight(key, velocity);
+        try self.setLight(key, color);
     }
     
     pub fn clearLightsGrid(self: *Self) !void {
         for (0..GRID_SIZE) |i| {
-            try self.setGridLight(i, 0);
+            try self.setGridLight(i, Color.BLANK);
         }
     }
 
@@ -115,7 +126,7 @@ pub const Launchpad = struct {
         const keyNames = std.EnumSet(NamedKey).initFull();
         var iter = keyNames.iterator();
         while (iter.next()) |key| {
-            try self.setLight(Launchpad.getNamedKey(key), 0);
+            try self.setLight(Launchpad.getNamedKey(key), Color.BLANK);
         }
     }
 
