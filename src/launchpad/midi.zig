@@ -1,7 +1,7 @@
 const std = @import("std");
 const fs = std.fs;
 
-pub const MidiError = error {
+const MidiError = error {
     NoMidiDeviceFound,
     NoUserInput,
     InvalidIndexInput,

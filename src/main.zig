@@ -1,11 +1,7 @@
 const std = @import("std");
 const fs = std.fs;
 
-const l_midi = @import("launchpad/midi.zig");
-const l_key = @import("launchpad/key.zig");
-const l_launchpad= @import("launchpad/launchpad.zig");
-
-const Launchpad = l_launchpad.Launchpad;
+const Launchpad = @import("launchpad/launchpad.zig").Launchpad;
 
 pub fn main() !void {
     // Create allocator
