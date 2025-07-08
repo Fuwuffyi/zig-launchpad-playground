@@ -29,13 +29,13 @@ pub const NamedKey = enum(u4) {
 
 pub const Color = enum(u8) {
     BLANK = 0x0C,
-    DIM_RED = 0x0D,
-    BRIGHT_RED = 0x0F,
-    DIM_AMBER = 0x1D,
-    BRIGHT_AMBER = 0x3F,
-    YELLOW = 0x3E,
-    DIM_GREEN = 0x1C,
-    BRIGHT_GREEN = 0x3C,
+    RED_LOW = 0x0D,
+    RED_HIGH = 0x0F,
+    AMBER_LOW = 0x1D,
+    AMBER_HIGH = 0x3F,
+    YELLOW_HIGH = 0x3E,
+    GREEN_LOW = 0x1C,
+    GREEN_HIGH = 0x3C,
 };
 
 pub const Launchpad = struct {

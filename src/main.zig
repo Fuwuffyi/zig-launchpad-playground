@@ -11,7 +11,7 @@ pub fn main() !void {
     // Initialize launchpad
     var launchpad = try Launchpad.init(allocator);
     // Light up utility buttons
-    try launchpad.setLight(Launchpad.getNamedKey(.MIXER), Color.BRIGHT_RED);
+    try launchpad.setLight(Launchpad.getNamedKey(.MIXER), Color.RED_HIGH);
     // Run loop to get messages
     var should_stop: bool = false;
     while (!should_stop) {
