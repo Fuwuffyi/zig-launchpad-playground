@@ -1,12 +1,12 @@
 const std = @import("std");
 
 const midi = @import("../util/midi.zig");
-const midi_msg = @import("../util/midi_message.zig");
-const k = @import("key.zig");
 
-const LaunchpadKey = k.LaunchpadKey;
+const LaunchpadKey = @import("key.zig").LaunchpadKey;
+
 const MidiDevice = midi.MidiDevice;
-const MidiMessage = midi_msg.MidiMessage;
+const Position = @import("../util/position.zig").Positon;
+const MidiMessage = @import("../util/midi_message.zig").MidiMessage;
 
 pub const NamedKey = enum(u4) {
     VOL,
@@ -100,6 +100,11 @@ pub const Launchpad = struct {
             return error.KeyOutOfBounds;
         }
         return grid_keys[index];
+    }
+
+    pub fn getGridKeyAt(pos: Position) !LaunchpadKey {
+        if (!pos.isValid()) return error.KeyOutOfBounds;
+        return grid_keys[pos.toGridIndex()];
     }
 
     pub fn getNamedKey(key: NamedKey) LaunchpadKey {

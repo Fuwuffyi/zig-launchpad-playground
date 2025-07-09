@@ -5,6 +5,8 @@ const l = @import("launchpad/launchpad.zig");
 const Launchpad = l.Launchpad;
 const Color = l.Color;
 
+const Position = @import("util/position.zig").Positon;
+
 pub fn main() !void {
     // Create allocator
     const allocator: std.mem.Allocator = std.heap.page_allocator;
