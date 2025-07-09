@@ -1,8 +1,8 @@
 const std = @import("std");
 
-const midi = @import("midi.zig");
+const midi = @import("../util/midi.zig");
+const midi_msg = @import("../util/midi_message.zig");
 const k = @import("key.zig");
-const midi_msg = @import("midi_message.zig");
 
 const LaunchpadKey = k.LaunchpadKey;
 const MidiDevice = midi.MidiDevice;

@@ -1,4 +1,4 @@
-const LaunchpadKey = @import("key.zig").LaunchpadKey;
+const LaunchpadKey = @import("../launchpad/key.zig").LaunchpadKey;
 
 pub const MidiMessage = struct {
     command: u8,
