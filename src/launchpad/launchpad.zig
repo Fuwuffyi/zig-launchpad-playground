@@ -156,4 +156,8 @@ pub const Launchpad = struct {
         try self.clearLightsGrid();
         try self.clearLightsTools();
     }
+    
+    pub fn reset(self: *Self) !void {
+        try self.device.write(&.{ 0xB0, 0x00, 0x00 });
+    }
 };

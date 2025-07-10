@@ -12,6 +12,7 @@ pub fn main() !void {
     const allocator: std.mem.Allocator = std.heap.page_allocator;
     // Initialize launchpad
     var launchpad = try Launchpad.init(allocator);
+    try launchpad.reset();
     // Light up utility buttons
     try launchpad.setLight(Launchpad.getNamedKey(.MIXER), Color.RED_HIGH);
     // Run loop to get messages
@@ -27,5 +28,5 @@ pub fn main() !void {
         }
         std.time.sleep(41_670_000); // ~24FPS
     }
-    try launchpad.clearLightsAll();
+    try launchpad.reset();
 }
