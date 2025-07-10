@@ -27,15 +27,32 @@ pub const NamedKey = enum(u4) {
     MIXER,
 };
 
+// Color velocity values
 pub const Color = enum(u8) {
+    // Clear color
     BLANK = 0x0C,
+    // Base colors
     RED_LOW = 0x0D,
+    RED_MED = 0x0E,
     RED_HIGH = 0x0F,
+    GREEN_LOW = 0x1C,
+    GREEN_MED = 0x2C,
+    GREEN_HIGH = 0x3C,
     AMBER_LOW = 0x1D,
+    AMBER_MED = 0x2E,
     AMBER_HIGH = 0x3F,
     YELLOW_HIGH = 0x3E,
-    GREEN_LOW = 0x1C,
-    GREEN_HIGH = 0x3C,
+    // Flash colors
+    FLASH_RED_LOW = 0x09,
+    FLASH_RED_MED = 0x0A,
+    FLASH_RED_HIGH = 0x0B,
+    FLASH_GREEN_LOW = 0x18,
+    FLASH_GREEN_MED = 0x28,
+    FLASH_GREEN_HIGH = 0x38,
+    FLASH_AMBER_LOW = 0x19,
+    FLASH_AMBER_MED = 0x2A,
+    FLASH_AMBER_HIGH = 0x3B,
+    FLASH_YELLOW_HIGH = 0x3A,
 };
 
 pub const Launchpad = struct {
