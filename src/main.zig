@@ -1,9 +1,8 @@
 const std = @import("std");
 const fs = std.fs;
 
-const l = @import("launchpad/launchpad.zig");
-const Launchpad = l.Launchpad;
-const Color = l.Color;
+const Launchpad = @import("launchpad/launchpad.zig").Launchpad;
+const Color = @import("launchpad/color.zig").Color;
 
 const Position = @import("util/position.zig").Positon;
 
