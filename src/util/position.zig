@@ -16,6 +16,13 @@ pub const Positon = struct {
         return self.x + self.y * 8;
     }
 
+    pub fn fromGridIndex(index: usize) Self {
+        return .{
+            .x = @intCast(index % 8),
+            .y = @intCast(index / 8),
+        };
+    }
+
     pub fn isValid(self: Self) bool {
         return self.x < 8 and self.y < 8;
     }
