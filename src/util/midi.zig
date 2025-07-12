@@ -2,12 +2,12 @@ const std = @import("std");
 const fs = std.fs;
 const os = std.os;
 
-const MidiError = error {
-    NoMidiDeviceFound,
-    NoUserInput,
-    InvalidIndexInput,
-    IndexOutOfBounds,
-    DeviceOpenFailed,
+const MidiError = error{
+NoMidiDeviceFound,
+NoUserInput,
+InvalidIndexInput,
+IndexOutOfBounds,
+DeviceOpenFailed,
 };
 
 pub const MidiDevice = struct {
@@ -23,7 +23,7 @@ pub const MidiDevice = struct {
     pub fn read(self: *const Self, buffer: []u8) !usize {
         return self.file.read(buffer);
     }
-    
+
     pub fn readNonBlocking(self: *const Self, buffer: []u8, timeout_ms: i32) !?usize {
         const fd = self.file.handle;
         var poll_fd = [_]os.linux.pollfd{
@@ -33,7 +33,7 @@ pub const MidiDevice = struct {
                 .revents = 0,
             },
         };
-        const poll_result = os.linux.poll(@ptrCast(&poll_fd), 1, timeout_ms);
+        const poll_result = os.linux.poll(&poll_fd, 1, timeout_ms);
         if (poll_result == 0) return null;
         if (poll_fd[0].revents & os.linux.POLL.IN != 0) return try self.file.read(buffer);
         return null;
@@ -87,7 +87,7 @@ pub fn chooseMidiDevice(allocator: std.mem.Allocator) !MidiDevice {
     const user_input = try stdin.readUntilDelimiterOrEof(&line_buf, '\n') orelse {
         return MidiError.NoUserInput;
     };
-    const choice = std.fmt.parseInt(usize, user_input, 4) catch {
+    const choice = std.fmt.parseInt(usize, user_input, 10) catch {
         return MidiError.InvalidIndexInput;
     };
     if (choice >= devices.len) return MidiError.IndexOutOfBounds;
