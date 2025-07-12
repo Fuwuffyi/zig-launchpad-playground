@@ -1,4 +1,4 @@
-pub const Positon = struct {
+pub const Position = struct {
     x: u8,
     y: u8,
 
@@ -34,12 +34,13 @@ pub const Positon = struct {
     pub fn moveDown(self: Self) Self {
         return .{ .x = self.x, .y = if (self.y < 7) self.y + 1 else 7 };
     }
-    
+
     pub fn moveLeft(self: Self) Self {
         return .{ .x = if (self.x > 0) self.x - 1 else 0, .y = self.y };
     }
-    
+
     pub fn moveRight(self: Self) Self {
         return .{ .x = if (self.x < 7) self.x + 1 else 7, .y = self.y };
     }
 };
+

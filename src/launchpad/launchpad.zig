@@ -9,7 +9,7 @@ const Color = c.Color;
 const LaunchpadKey = @import("key.zig").LaunchpadKey;
 
 const MidiDevice = midi.MidiDevice;
-const Position = @import("../util/position.zig").Positon;
+const Position = @import("../util/position.zig").Position;
 const MidiMessage = @import("../util/midi_message.zig").MidiMessage;
 
 
